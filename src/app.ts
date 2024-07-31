@@ -19,7 +19,7 @@ dotenv.config({ path: ".env" });
 
 app.use(
   cors({
-    origin: "*", // replace with your frontend URL
+    origin: "https://to-do-frontend-kw4v.vercel.app/", // replace with your frontend URL
     credentials: true,
   })
 );
