@@ -48,11 +48,12 @@ const createSendToken = (
   res: express.Response
 ) => {
   const token = signToken(user._id as Types.ObjectId);
-  const cookieOptions = {
-    //IN js to specify date we use new Date
-    maxage: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
-    httpOnly: true, // SO the cookie cannot be accessed or modified by the browser
-    sameSite: "None",
+
+  // Make sure to use a string literal type for `sameSite`
+  const cookieOptions: express.CookieOptions = {
+    maxAge: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000, // maxAge instead of maxage
+    httpOnly: true,
+    sameSite: "none", // Ensure this is a valid string literal
   };
 
   res.cookie("JWT", token, cookieOptions);
@@ -60,9 +61,6 @@ const createSendToken = (
   res.status(statusCode).json({
     status: "success",
     token,
-    data: {
-      user: user,
-    },
   });
 };
 
