@@ -54,6 +54,7 @@ const createSendToken = (
     maxAge: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000, // maxAge instead of maxage
     httpOnly: true,
     sameSite: "none", // Ensure this is a valid string literal
+    secure: true,
   };
 
   res.cookie("JWT", token, cookieOptions);
