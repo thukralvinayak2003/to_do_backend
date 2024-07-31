@@ -17,12 +17,25 @@ app.use(express.json());
 
 dotenv.config({ path: ".env" });
 
+const allowedOrigins = [
+  "http://localhost:3000", // Local development
+  "https://to-do-frontend-kw4v.vercel.app", // Production frontend URL
+];
+
 app.use(
   cors({
-    origin: "https://to-do-frontend-kw4v.vercel.app/", // replace with your frontend URL
-    credentials: true,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // Allows cookies to be sent
   })
 );
+
+app.options("*", cors());
 
 app.use(helmet());
 
