@@ -35,18 +35,17 @@ const signToken = (id) => jsonwebtoken_1.default.sign({ id }, Secret, {
 });
 const createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id);
+    // Make sure to use a string literal type for `sameSite`
     const cookieOptions = {
-        //IN js to specify date we use new Date
-        maxage: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
-        httpOnly: true, // SO the cookie cannot be accessed or modified by the browser
+        maxAge: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000, // maxAge instead of maxage
+        httpOnly: true,
+        sameSite: "none", // Ensure this is a valid string literal
+        secure: true,
     };
     res.cookie("JWT", token, cookieOptions);
     res.status(statusCode).json({
         status: "success",
         token,
-        data: {
-            user: user,
-        },
     });
 };
 exports.signup = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
