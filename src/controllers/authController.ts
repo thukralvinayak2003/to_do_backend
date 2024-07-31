@@ -52,6 +52,7 @@ const createSendToken = (
     //IN js to specify date we use new Date
     maxage: Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
     httpOnly: true, // SO the cookie cannot be accessed or modified by the browser
+    sameSite: "None",
   };
 
   res.cookie("JWT", token, cookieOptions);
