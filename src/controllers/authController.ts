@@ -51,7 +51,6 @@ const createSendToken = (
 
   // Make sure to use a string literal type for `sameSite`
   const cookieOptions: express.CookieOptions = {
-    maxAge: 90 * 24 * 60 * 60 * 1000, // maxAge instead of maxage
     httpOnly: true,
     sameSite: "none", // Ensure this is a valid string literal
     secure: true,

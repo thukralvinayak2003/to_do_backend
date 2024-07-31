@@ -41,15 +41,15 @@ app.use((req, res, next) => {
 
 app.use(helmet());
 
-app.set("trust proxy", 1);
+// app.set("trust proxy", 1);
 
-const limiter = rateLimit({
-  max: 10000,
-  windowMs: 6 * 60 * 1000,
-  message: "Too many requests from this IP . Please try again later",
-});
+// const limiter = rateLimit({
+//   max: 10000,
+//   windowMs: 6 * 60 * 1000,
+//   message: "Too many requests from this IP . Please try again later",
+// });
 
-app.use("/api", limiter);
+// app.use("/api", limiter);
 
 app.use(mongoSanitize());
 
