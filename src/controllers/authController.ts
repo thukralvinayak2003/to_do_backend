@@ -4,6 +4,8 @@ import catchAsync from "../utils/catchAsync";
 import { User, userType } from "../models/User";
 import { Types } from "mongoose";
 import appError from "../utils/appError";
+import * as crypto from "crypto";
+import { getUser } from "./userController";
 
 export interface GetUserAuthInfoRequest extends Request {
   user?: userType; // or any other type
@@ -46,24 +48,10 @@ const createSendToken = (
   res: express.Response
 ) => {
   const token = signToken(user._id as Types.ObjectId);
-  const parseDurationString = (str: string) => {
-    const units: any = {
-      d: 24 * 60 * 60 * 1000,
-      h: 60 * 60 * 1000,
-      m: 60 * 1000,
-      s: 1000,
-    };
-
-    const matches = str.match(/(\d+)([dhms])/);
-    if (!matches) throw new Error("Invalid duration string");
-
-    const [, value, unit] = matches;
-    return parseInt(value, 10) * units[unit];
-  };
 
   // Make sure to use a string literal type for `sameSite`
   const cookieOptions: express.CookieOptions = {
-    maxAge: parseDurationString(process.env.JWT_COOKIE_EXPIRES_IN as string), // maxAge instead of maxage
+    maxAge: 90 * 24 * 60 * 60 * 1000, // maxAge instead of maxage
     httpOnly: true,
     sameSite: "none", // Ensure this is a valid string literal
     secure: true,
