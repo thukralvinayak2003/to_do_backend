@@ -30,13 +30,6 @@ const userSchema = new mongoose.Schema<userType>({
   },
 });
 
-userSchema.pre("save", async function (next: express.NextFunction) {
-  //ONly run this function if the password field is modified
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 12); // 12 here means how much cpu intensive the encryption should be more the number better the encryption and more cpu intensive it is means more time to encrypt
-  this.passwordConfirm = undefined; // to remove the confirm password from the database
-});
-
 userSchema.methods.correctPassword = async function (
   candidatePassword: string,
   userPassword: string

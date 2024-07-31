@@ -3,7 +3,7 @@ import catchAsync from "../utils/catchAsync";
 import AppError from "../utils/appError";
 import { Document, Model as MongooseModel, Query } from "mongoose";
 
-interface ModelType extends MongooseModel<unknown> {}
+interface ModelType extends MongooseModel<any> {}
 
 export const deleteOne = (Model: ModelType) =>
   catchAsync(async (req: Request, res: Response, next: NextFunction) => {

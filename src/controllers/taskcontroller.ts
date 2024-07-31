@@ -1,7 +1,7 @@
 import catchAsync from "../utils/catchAsync";
 import * as factory from "./factoryHander";
 import { NextFunction, Request, Response } from "express";
-import { userType } from "models/User";
+import { userType } from "../models/User";
 import { Task } from "../models/Task";
 import AppError from "../utils/appError";
 

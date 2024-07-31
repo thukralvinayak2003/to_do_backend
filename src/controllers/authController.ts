@@ -1,4 +1,4 @@
-import * as jwt from "jsonwebtoken";
+import jwt, { Secret, VerifyOptions, JwtPayload } from "jsonwebtoken";
 import express, { Request } from "express";
 import catchAsync from "../utils/catchAsync";
 import { User, userType } from "../models/User";
@@ -13,15 +13,18 @@ export interface GetUserAuthInfoRequest extends Request {
 
 const verifyJwt = (
   token: string,
-  secretOrPublicKey: jwt.Secret,
-  options?: jwt.VerifyOptions
-): Promise<object> => {
+  secretOrPublicKey: Secret,
+  options?: VerifyOptions
+): Promise<JwtPayload | string> => {
   return new Promise((resolve, reject) => {
     jwt.verify(
       token,
       secretOrPublicKey,
       options,
-      (err: jwt.VerifyErrors | null, decoded: object | undefined) => {
+      (
+        err: jwt.VerifyErrors | null,
+        decoded: JwtPayload | string | undefined
+      ) => {
         if (err) {
           reject(err);
         } else {
@@ -32,8 +35,10 @@ const verifyJwt = (
   });
 };
 
+const Secret: jwt.Secret = process.env.JWT_SECRET as jwt.Secret;
+
 const signToken = (id: Types.ObjectId) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, {
+  jwt.sign({ id }, Secret, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
@@ -121,11 +126,9 @@ export const protect = catchAsync(
       );
     }
     //2- Verify the token
+    // { id?: string; iat?: number; exp?: number }
 
-    const decode: { id?: string; iat?: number; exp?: number } = await verifyJwt(
-      token,
-      process.env.JWT_SECRET
-    ); //this needs a callback but if u want to return a promise we need to promisify the function
+    const decode = await verifyJwt(token, Secret); //this needs a callback but if u want to return a promise we need to promisify the function
     //decode will have the id
     //3- Check if the user still exists i.e if the user is deleted then the token should also be not valid
     const currentUser = await User.findById((decode as { id?: string }).id);

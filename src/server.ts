@@ -12,14 +12,15 @@ const server = app.listen(PORT, () => {
   console.log(`Connecting to port ${PORT} complete`);
 });
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log(`Mongo connected to port ${PORT}`);
-  })
-  .catch((e: Error) => {
-    console.log(`${e.message} did not connect`);
-  });
+if (process.env.MONGO_URL)
+  mongoose
+    .connect(process.env.MONGO_URL)
+    .then(() => {
+      console.log(`Mongo connected to port ${PORT}`);
+    })
+    .catch((e: Error) => {
+      console.log(`${e.message} did not connect`);
+    });
 
 process.on("unhandledRejection", (err: Error) => {
   console.log(err.name, err.message);
