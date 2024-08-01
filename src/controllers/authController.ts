@@ -53,6 +53,7 @@ const createSendToken = (
     httpOnly: true,
     sameSite: "none", // Adjust this as needed based on your deployment
     secure: true, // Ensure this is correctly configured with HTTPS
+    maxAge: 90 * 24 * 60 * 60 * 1000, // Cookie valid for 1 day
   };
 
   res.cookie("JWT", token, cookieOptions);
