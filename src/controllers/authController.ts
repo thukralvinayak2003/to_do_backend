@@ -49,11 +49,10 @@ const createSendToken = (
 ) => {
   const token = signToken(user._id as Types.ObjectId);
 
-  // Make sure to use a string literal type for `sameSite`
   const cookieOptions: express.CookieOptions = {
     httpOnly: true,
-    sameSite: "none", // Ensure this is a valid string literal
-    secure: true,
+    sameSite: "none", // Adjust this as needed based on your deployment
+    secure: true, // Ensure this is correctly configured with HTTPS
   };
 
   res.cookie("JWT", token, cookieOptions);
@@ -64,7 +63,7 @@ const createSendToken = (
   });
 };
 
-export const signup = catchAsync(
+const signup = catchAsync(
   async (req: express.Request, res: express.Response) => {
     const newUser = await User.create({
       name: req.body.name,
