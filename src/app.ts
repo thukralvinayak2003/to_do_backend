@@ -18,8 +18,7 @@ app.use(express.json());
 dotenv.config({ path: ".env" });
 
 const corsOptions = {
-  origin:
-    "https://to-do-frontend-kw4v-k8lkonkua-vinayak-thukrals-projects.vercel.app/",
+  origin: "https://to-do-frontend-kw4v.vercel.app/",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
@@ -42,15 +41,15 @@ app.use((req, res, next) => {
 
 app.use(helmet());
 
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 
-// const limiter = rateLimit({
-//   max: 10000,
-//   windowMs: 6 * 60 * 1000,
-//   message: "Too many requests from this IP . Please try again later",
-// });
+const limiter = rateLimit({
+  max: 10000,
+  windowMs: 6 * 60 * 1000,
+  message: "Too many requests from this IP . Please try again later",
+});
 
-// app.use("/api", limiter);
+app.use("/api", limiter);
 
 app.use(mongoSanitize());
 
