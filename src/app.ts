@@ -18,7 +18,7 @@ app.use(express.json());
 dotenv.config({ path: ".env" });
 
 const corsOptions = {
-  origin: "https://to-do-frontend-kw4v.vercel.app/",
+  origin: "https://to-do-frontend-kw4v.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
